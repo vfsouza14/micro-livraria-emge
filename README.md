@@ -85,7 +85,7 @@ A seguir vamos descrever a sequência de passos para você executar o sistema lo
 2. Vá para o terminal do seu sistema operacional e clone o projeto (lembre-se de incluir o seu usuário GitHub na URL antes de executar)
 
 ```
-git clone https://github.com/<SEU USUÁRIO>/micro-livraria.git
+git clone https://github.com/<SEU USUÁRIO>/micro-livraria-emge.git
 ```
 
 3. É também necessário ter o Node.js instalado na sua máquina. Se você não tem, siga as instruções para instalação contidas nessa [página](https://nodejs.org/en/download/).
@@ -93,7 +93,7 @@ git clone https://github.com/<SEU USUÁRIO>/micro-livraria.git
 4. Em um terminal, vá para o diretório no qual o projeto foi clonado e instale as dependências necessárias para execução dos microsserviços:
 
 ```
-cd micro-livraria
+cd micro-livraria-emge
 npm install
 ```
 
