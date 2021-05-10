@@ -6,7 +6,7 @@ O exemplo foi projetado para ser usado em uma **aula prática sobre microsservi�
 
 O objetivo da aula é permitir que o aluno tenha um primeiro contato com microsserviços e com tecnologias normalmente usadas nesse tipo de arquitetura, tais como **Node.js**, **REST**, **gRPC** e **Docker**.
 
-Como nosso objetivo é didático, na livraria virtual estão à venda apenas três livros, conforme pode ser visto na próxima figura, que mostra a interface Web do sistema. Além disso, a operação de compra apenas simula a ação do usuário, não efetuando mudanças no estoque. Assim, os clientes da livraria podem realizar apenas duas operações: (1) listar os produtos à venda; (2) calcular o frete de envio.
+Como nosso objetivo é didático, na livraria virtual estão à venda apenas três livros, conforme pode ser visto na próxima figura, que mostra a interface Web do sistema. Assim, os clientes da livraria podem realizar apenas duas operações: (1) listar os produtos à venda; (2) calcular o frete de envio.
 
 <p align="center">
     <img width="70%" src="https://user-images.githubusercontent.com/7620947/108773349-f68f3500-753c-11eb-8c4f-434ca9a9deec.png" />
@@ -18,7 +18,8 @@ No restante deste documento vamos:
 -   Apresentar instruções para sua execução local, usando o código disponibilizado no repositório.
 -   Descrever duas tarefas práticas para serem realizadas pelos alunos, as quais envolvem:
     -   Tarefa Prática #1: Implementação de uma nova operação em um dos microsserviços
-    -   Tarefa Prática #2: Criação de containers Docker para facilitar a execução dos microsserviços.
+    -   Tarefa Prática #2: Criação de containers Docker para facilitar a execução dos microsserviços.    
+    -   Tarefa Prática #3: Implementar o controle de estoque dos livros
 
 ## Arquitetura
 
@@ -347,10 +348,15 @@ git add --all
 git commit -m "Tarefa prática #2 - Docker"
 git push origin main
 ```
+## Tarefa Prática #3: Implementar o controle de estoque dos livros
+
+Agora é sua vez. Nesta tarefa você deverá implementar o controle de estoque de livros e alterar o front-end de acordo com o estoque. Lembre-se de deixar o produto indisponível caso o estoque esteja zerado. Implemente também uma operação para adicionar livros no estoque, esta operação não deve ficar disponível no front-end, servirá apenas para testar as operações de estoque. 
+
+Bom trabalho.
 
 ## Comentários Finais
 
-Nesta aula, trabalhamos em uma aplicação baseada em microsserviços. Apesar de pequena, ela ilustra os princípios básicos de microsserviços, bem como algumas tecnologias importantes quando se implementa esse tipo de arquitetura.
+Neste exercício, trabalhamos em uma aplicação baseada em microsserviços. Apesar de pequena, ela ilustra os princípios básicos de microsserviços, bem como algumas tecnologias importantes quando se implementa esse tipo de arquitetura.
 
 No entanto, é importante ressaltar que em uma aplicação real existem outros componentes, como bancos de dados, balanceadores de carga e orquestradores.
 
