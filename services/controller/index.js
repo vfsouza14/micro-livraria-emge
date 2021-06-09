@@ -20,6 +20,15 @@ app.get('/products', (req, res, next) => {
     });
 });
 
+app.get('/books/:id', (req, res) => {
+    const { id } = req.query;
+
+    const updatedProduct = inventory.UpdateProduct(id);
+
+    return updatedProduct;
+});
+
+
 /**
  * Consulta o frete de envio no ShippingService
  */
@@ -42,16 +51,22 @@ app.get('/shipping/:cep', (req, res, next) => {
     );
 });
 
-app.get('/product/:id', (req, res, next) => {
-    inventory.SearchProductByID({ id: req.params.id }, (err, product) => {
-        if (err) {
+app.get('/product/:id', (req, res, next)=> {
+    inventory.SearchProductByID({id: req.params.id}, (err, product) => {
+         // Se ocorrer algum erro de comunicação
+        // com o microsserviço, retorna para o navegador.
+        if (err){
             console.error(err);
-            res.status(500).send({ error: 'something failed :(' });
-        } else {
+            res.status(500).send({ error: 'Houve algum erro'});
+        }else{
+            // Caso contrário, retorna resultado do
+            // microsserviço (um arquivo JSON) com os dados
+            // do produto pesquisado
             res.json(product);
         }
     });
 });
+
 
 /**
  * Inicia o router

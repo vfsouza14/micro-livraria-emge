@@ -16,7 +16,7 @@ function newBook(book) {
                 <div class="content book" data-id="${book.id}">
                     <div class="book-meta">
                         <p class="is-size-4">R$${book.price.toFixed(2)}</p>
-                        <p class="is-size-6">Disponível em estoque: 5</p>
+                        <p class="is-size-6">Disponível em estoque: ${book.quantity}</p>
                         <h4 class="is-size-3 title">${book.name}</h4>
                         <p class="subtitle">${book.author}</p>
                     </div>
@@ -33,6 +33,13 @@ function newBook(book) {
             </div>
         </div>`;
     return div;
+}
+
+function CountStorage(quantity) {
+   
+    if(quantity > 0){
+        quantity--;
+    }
 }
 
 function calculateShipping(id, cep) {
@@ -77,8 +84,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 document.querySelectorAll('.button-buy').forEach((btn) => {
-                    btn.addEventListener('click', (e) => {
+                    btn.addEventListener('click', async (e) => {
                         swal('Compra de livro', 'Sua compra foi realizada com sucesso', 'success');
+                        SearchProductByID();
+                        data.quantity--;
                     });
                 });
             }
