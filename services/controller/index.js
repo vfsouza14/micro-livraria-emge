@@ -10,6 +10,7 @@ app.use(cors());
  * Retorna a lista de produtos da loja via InventoryService
  */
 app.get('/products', (req, res, next) => {
+
     inventory.SearchAllProducts(null, (err, data) => {
         if (err) {
             console.error(err);
@@ -20,13 +21,35 @@ app.get('/products', (req, res, next) => {
     });
 });
 
-app.get('/books/:id', (req, res) => {
-    const { id } = req.query;
+app.get('/books/:id/:param', (req, res, next) => {
+    if(req.params.param == 0){
+        inventory.RemoveProduct({id: req.params.id}, (err, product) => {
+       
+            if (err){
+                console.error(err);
+                res.status(500).send({ error: 'Houve algum erro'});
+            }else{
+                res.json(product);
+            }
+        });
+    }else{
 
-    const updatedProduct = inventory.UpdateProduct(id);
-
-    return updatedProduct;
+        inventory.AddProduct({id: req.params.id}, (err, product) => {
+       
+            if (err){
+                console.error(err);
+                res.status(500).send({ error: 'Houve algum erro'});
+            }else{
+                res.json(product);
+            }
+        });
+    }
+    
+   
 });
+
+
+
 
 
 /**

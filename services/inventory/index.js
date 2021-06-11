@@ -26,6 +26,28 @@ server.addService(inventoryProto.InventoryService.service, {
             products.find((product) => product.id == payload.request.id)
         );
     },
+    RemoveProduct: (payload, callback) => {
+        let product = products.find((product) => product.id == payload.request.id)
+        if(product.quantity > 0){
+            product.quantity--;
+        }
+        callback(
+            null,
+            product
+            
+        );
+    },
+    AddProduct: (payload, callback) => {
+        let product = products.find((product) => product.id == payload.request.id)
+        if(product.quantity < 10){
+            product.quantity++;
+        }
+        callback(
+            null,
+            product
+            
+        );
+    },
     
 });
 

@@ -16,7 +16,7 @@ function newBook(book) {
                 <div class="content book" data-id="${book.id}">
                     <div class="book-meta">
                         <p class="is-size-4">R$${book.price.toFixed(2)}</p>
-                        <p class="is-size-6">Disponível em estoque: ${book.quantity}</p>
+                        <p class="is-size-6" id = "estoque">Disponível em estoque: ${book.quantity}</p>
                         <h4 class="is-size-3 title">${book.name}</h4>
                         <p class="subtitle">${book.author}</p>
                     </div>
@@ -28,19 +28,15 @@ function newBook(book) {
                             <a class="button button-shipping is-info" data-id="${book.id}"> Calcular Frete </a>
                         </div>
                     </div>
-                    <button class="button button-buy is-success is-fullwidth">Comprar</button>
+                    <button class="button button-buy is-success " data-id="${book.id}" style="width:40%">Comprar</button>
+                    <button class="button button-return is-info " data-id="${book.id}" style="width:40%">Retornar</button>
                 </div>
             </div>
         </div>`;
     return div;
 }
 
-function CountStorage(quantity) {
-   
-    if(quantity > 0){
-        quantity--;
-    }
-}
+
 
 function calculateShipping(id, cep) {
     fetch('http://localhost:3000/shipping/' + cep)
@@ -59,6 +55,62 @@ function calculateShipping(id, cep) {
         });
 }
 
+function RemoveQuantity(id, param) {
+    fetch('http://localhost:3000/books/' + id + '/' + param)
+        .then((data) => {
+            if (data.ok) {
+                return data.json();
+            }
+            throw data.statusText;
+        })
+        .then(function (data) {
+            if (data.quantity >= 0){
+                $(".button-return")[id-1].removeAttribute("disabled");
+                let dados = document.querySelectorAll(`.book #estoque`)[id-1];
+                var textNode = document.createTextNode("Disponível em estoque: " + data.quantity);
+                dados.replaceChild(textNode, dados.childNodes[0]);
+                
+                if (data.quantity == 0) {
+                    $(".button-buy")[id-1].setAttribute("disabled", "");
+                }
+            }else{
+                swal('Erro', 'Não há inventário restante!', 'error');
+            }
+        })
+        .catch((err) => {
+            swal('Erro', 'Erro ao atualizar o inventário', 'error');
+            console.error(err);
+        });
+}
+
+function AddQuantity(id, param) {
+    fetch('http://localhost:3000/books/' + id+ '/' + param)
+        .then((data) => {
+            if (data.ok) {
+                return data.json();
+            }
+            throw data.statusText;
+        })
+        .then(function (data) {
+            if (data.quantity <= 10){
+                $(".button-buy")[id-1].removeAttribute("disabled");
+                let dados = document.querySelectorAll(`.book #estoque`)[id-1];
+                var textNode = document.createTextNode("Disponível em estoque: " + data.quantity);
+                dados.replaceChild(textNode, dados.childNodes[0]);
+                
+                if (data.quantity == 10) {
+                    $(".button-return")[id-1].setAttribute("disabled", "");
+                }
+            }else{
+                swal('Erro', 'Não há inventário restante!', 'error');
+            }
+        })
+        .catch((err) => {
+            swal('Erro', 'Erro ao atualizar o inventário', 'error');
+            console.error(err);
+        });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const books = document.querySelector('.books');
 
@@ -73,6 +125,9 @@ document.addEventListener('DOMContentLoaded', function () {
             if (data) {
                 data.forEach((book) => {
                     books.appendChild(newBook(book));
+                    if (book.quantity == 0) {
+                        $(".button-buy")[book.id - 1].setAttribute("disabled", "");
+                    }
                 });
 
                 document.querySelectorAll('.button-shipping').forEach((btn) => {
@@ -82,14 +137,27 @@ document.addEventListener('DOMContentLoaded', function () {
                         calculateShipping(id, cep);
                     });
                 });
-
+    
                 document.querySelectorAll('.button-buy').forEach((btn) => {
-                    btn.addEventListener('click', async (e) => {
+                    btn.addEventListener('click', (e) => {
+                        const id = e.target.getAttribute('data-id')                 
+                        RemoveQuantity(Number(id), 0);
+                        
                         swal('Compra de livro', 'Sua compra foi realizada com sucesso', 'success');
-                        SearchProductByID();
-                        data.quantity--;
+                        
                     });
                 });
+                document.querySelectorAll('.button-return').forEach((btn) => {
+                    btn.addEventListener('click', (e) => {
+                        const id = e.target.getAttribute('data-id')                 
+                        AddQuantity(Number(id),1);
+                        
+                        swal('livro adicionado com sucesso', 'success');
+                        
+                    });
+                });
+                
+
             }
         })
         .catch((err) => {
